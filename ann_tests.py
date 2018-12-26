@@ -3,8 +3,9 @@ from ann import ann, ann_by_layers
 import io
 import contextlib
 
-# To Consider:
+# To Consider/Add:
 # 1. Mock test the base class
+# 2. Test ann_by_layers with layer array inputs.
 				
 class test_ann_by_layers(unittest.TestCase):
 

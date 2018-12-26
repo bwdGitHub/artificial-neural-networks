@@ -1,5 +1,8 @@
 from abc import ABC, abstractmethod
 
+# To consider/add:
+# 1. Helper constructor for multilayer perceptron, with given activation.
+
 class ann(ABC):
 	## ann - Artifical Neural Network
 	# Parent class for various implementations		

@@ -12,7 +12,7 @@ class test_ann_by_layers(unittest.TestCase):
 	def __init__(this, *args, **kwargs):
 		# Initialize test attributes and parameters
 		
-		# Parameter for valid inputs to cosntructor.
+		# Parameter for valid inputs to constructor.
 		this.validInputs = [([],''), ([],'test'), ([], 'test')]
 		
 		# Super constructor.

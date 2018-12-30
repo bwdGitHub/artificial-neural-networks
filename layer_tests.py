@@ -5,6 +5,7 @@ import numpy.testing as nptest
 
 # To add:
 # 1. Test fc layer - construction with different inputs, forward with different inputs, backward with different inputs.
+# 2. err_msg diagnostics - have a helper construct the message.
 
 class test_fc_layer(unittest.TestCase):
 	
@@ -67,7 +68,16 @@ class test_fc_layer(unittest.TestCase):
 				dydWij_exp = np.zeros((4,1))
 				dydWij_exp[i] = x[j]
 				nptest.assert_array_equal(dydWij_act, dydWij_exp, err_msg = "fc layer W_gradient incorrect for \n W= \n {} \n and \n b= \n {}".format(W,b))
-				
+		
+		# Test return as tensor - dy(k)/dW(i,j) = x(j) if i==k, otherwise 0.
+		dydW_act = layer.W_gradient(x)
+		dydW_exp = np.zeros((4,4,5))
+		for i in range(4):
+			for j in range(5):
+				dydW_exp[i,i,j] = x[j]
+		nptest.assert_array_equal(dydW_act, dydW_exp, err_msg = "fc layer W_gradient tensor return incorrect for \n W= \n {} \n and \n b = \n {}".format(W,b))
+		
+		
 	def test_b_gradient(this):
 	
 		# Test the gradients with respect to b
@@ -79,7 +89,12 @@ class test_fc_layer(unittest.TestCase):
 			dydb_act = layer.b_gradient(x,i)
 			dydb_exp = np.zeros((4,1))
 			dydb_exp[i] = 1
-			nptest.assert_array_equal(dydb_act, dydb_exp, "fc layer b_gradient incorrect for \n W= \n {} \n and \n b= \n {}".format(W,b))
+			nptest.assert_array_equal(dydb_act, dydb_exp, err_msg = "fc layer b_gradient incorrect for \n W= \n {} \n and \n b= \n {}".format(W,b))
+		
+		# Test return as tensor - dy/db = Identity matrix in hidden dimension
+		dydb_act = layer.b_gradient(x)
+		dydb_exp = np.eye(4)
+		nptest.assert_array_equal(dydb_act, dydb_exp, err_msg = "fc layer b_gradient tensor return incorrect for \n W = \n {} \n and \n b = \n {}".format(W,b))
 		
 	def test_x_gradient(this):
 	
@@ -89,10 +104,12 @@ class test_fc_layer(unittest.TestCase):
 		x = np.random.randint(low = -5, high = 5, size = (5, 1))
 		layer = layers.fc(NumHidden = 4, W = W, b = b)
 		for i in range(4):
-			dydxi_act = layer.x_gradient(i)
+			dydxi_act = layer.x_gradient(x, i)
 			dydxi_exp = W[:,i]
-			nptest.assert_array_equal(dydxi_act, dydxi_exp, "fc layer x_gradient incorrect for \n W= \n {} \n and \n b= \n {}".format(W,b))
-
+			nptest.assert_array_equal(dydxi_act, dydxi_exp, err_msg = "fc layer x_gradient incorrect for \n W= \n {} \n and \n b= \n {}".format(W,b))
+		
+		# Test return as tensor - dy/dx = W		
+		dydx_act = layer.x_gradient(x)		dydx_exp = W		nptest.assert_array_equal(dydx_act,dydx_exp, err_msg = "fc layer x_gradient tensor return incorrect for \n W = \n {} and \n b = \n {}".format(W,b))		
 
 		
 if __name__ == '__main__':

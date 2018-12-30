@@ -39,7 +39,7 @@ class test_fc_layer(unittest.TestCase):
 				layer = layers.fc(**this.validInputs[input_key])
 				this.assertIsInstance(layer, layers.fc)
 				this.assertEqualProperties(layer, **this.validInputs[input_key])
-			
+		def test_get_training_parameters(this):		# Test the get_training_parameters method		layer = layers.fc(NumHidden = 10)		params = layer.get_training_parameters()		params_exp = {			'Weights': {'Name': 'W'},			'Bias': {'Name':'b'}		}		this.assertDictEqual(params, params_exp)		
 	def test_forward(this):
 		
 		# Test the forward method
@@ -114,7 +114,7 @@ class test_fc_layer(unittest.TestCase):
 		
 		# Test the constructor
 		layer = layers.relu()
-		this.assertIsInstance(layer, layers.relu)	def test_relu_forward(this):		# Test the relu forward method.				x = np.random.randint(low = -10, high = 10, size = (30,1))		layer = layers.relu()		y = layer.forward(x)		y_exp = x		y_exp[x<0] = 0		nptest.assert_array_equal(y,y_exp, err_msg = "relu layer forward incorrect for \n x = \n {} \n".format(x))	def test_relu_x_gradient(this):		# Test the x gradient of relu.		x = np.random.randint(low = -10, high = 10, size = (30,1))		layer = layers.relu()		dydx = layer.x_gradient(x)		idx = (layer.forward(x)!=x)		dydx_exp = np.eye(30)		dydx_exp[idx[:,0],idx[:,0]] = 0		nptest.assert_array_equal(dydx, dydx_exp, err_msg = "relu layer x gradient incorrect for \n x = \n {} \n".format(x))
+		this.assertIsInstance(layer, layers.relu)	def test_get_training_parameters(this):		# Test the get_training_parameters method.		layer = layers.relu()		params = layer.get_training_parameters()		this.assertDictEqual(params, {})	def test_relu_forward(this):		# Test the relu forward method.				x = np.random.randint(low = -10, high = 10, size = (30,1))		layer = layers.relu()		y = layer.forward(x)		y_exp = x		y_exp[x<0] = 0		nptest.assert_array_equal(y,y_exp, err_msg = "relu layer forward incorrect for \n x = \n {} \n".format(x))	def test_relu_x_gradient(this):		# Test the x gradient of relu.		x = np.random.randint(low = -10, high = 10, size = (30,1))		layer = layers.relu()		dydx = layer.x_gradient(x)		idx = (layer.forward(x)!=x)		dydx_exp = np.eye(30)		dydx_exp[idx[:,0],idx[:,0]] = 0		nptest.assert_array_equal(dydx, dydx_exp, err_msg = "relu layer x gradient incorrect for \n x = \n {} \n".format(x))
 		
 if __name__ == '__main__':
 	unittest.main()

@@ -2,7 +2,7 @@ from abc import ABC, abstractmethod
 import numpy as np
 
 # To Do/Consider:
-# 1. Remove indexed return for gradients?# 2. Fix down a gradient API?
+# 1. Remove indexed return for gradients?# 2. Fix down a gradient API?# 3. Get trainable parameters API/Implementation?
 
 class layer(ABC):
 	## layer - Abstract base class for layers.	
@@ -15,7 +15,7 @@ class layer(ABC):
 	def backward(this, *args, **kwargs):
 		pass
 		
-
+	@abstractmethod	def get_training_parameters(this, *args, **kwargs):		pass
 class fc(layer):
 	
 	## fc - A fully connected layer
@@ -33,7 +33,10 @@ class fc(layer):
 	
 	def backward(this):
 		print("Backward for fc not implemented")
-		raise NotImplementedError
+		raise NotImplementedError	def get_training_parameters(this, x = []):		# Return dictionary of trainable parameters, optionally with gradients.		if x == []:			params = { 
+			'Weights': {'Name': 'W'},
+			'Bias': {'Name':'b'}
+			}		else:			params = { 				'Weights' : {'Name': 'W', 'Gradient': this.W_gradient(x)},				'Bias' : {'Name':'b', 'Gradient': this.b_gradient(x)}					}		return params
 		
 	def W_gradient(this, x, i=[], j=[]):
 		# Gradient of y = this.forward(x) w.r.t. W[i,j]	
@@ -75,4 +78,4 @@ class fc(layer):
 		
 		# dy/dx[i]
 		
-		return this.W[:,i]class relu(layer):	def forward(this,x):		return np.maximum(x,0)	def backward(this):		return NotImplementedError	def x_gradient(this, x):		# Gradient of y = this.forward(x) w.r.t. x		dydx = np.eye(x.shape[0])		idx = x[:,0]<0		dydx[idx, idx] = 0		return dydx		
+		return this.W[:,i]class relu(layer):	def forward(this,x):		return np.maximum(x,0)	def backward(this):		return NotImplementedError	def get_training_parameters(this,x=[]):		return {}	def x_gradient(this, x):		# Gradient of y = this.forward(x) w.r.t. x		dydx = np.eye(x.shape[0])		idx = x[:,0]<0		dydx[idx, idx] = 0		return dydx		

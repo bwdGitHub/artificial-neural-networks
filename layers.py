@@ -2,7 +2,7 @@ from abc import ABC, abstractmethod
 import numpy as np
 
 # To Do/Consider:
-# 1. fc layer gradients format could be more general, but would need a 3d-array for dy/dW
+# 1. Remove indexed return for gradients?# 2. Fix down a gradient API?
 
 class layer(ABC):
 	## layer - Abstract base class for layers.	

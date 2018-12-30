@@ -109,8 +109,12 @@ class test_fc_layer(unittest.TestCase):
 			nptest.assert_array_equal(dydxi_act, dydxi_exp, err_msg = "fc layer x_gradient incorrect for \n W= \n {} \n and \n b= \n {}".format(W,b))
 		
 		# Test return as tensor - dy/dx = W		
-		dydx_act = layer.x_gradient(x)		dydx_exp = W		nptest.assert_array_equal(dydx_act,dydx_exp, err_msg = "fc layer x_gradient tensor return incorrect for \n W = \n {} and \n b = \n {}".format(W,b))		
-
+		dydx_act = layer.x_gradient(x)		dydx_exp = W		nptest.assert_array_equal(dydx_act,dydx_exp, err_msg = "fc layer x_gradient tensor return incorrect for \n W = \n {} and \n b = \n {}".format(W,b))class test_relu_layer(unittest.TestCase):	
+	def test_constructor(this):
+		
+		# Test the constructor
+		layer = layers.relu()
+		this.assertIsInstance(layer, layers.relu)	def test_relu_forward(this):		# Test the relu forward method.				x = np.random.randint(low = -10, high = 10, size = (30,1))		layer = layers.relu()		y = layer.forward(x)		y_exp = x		y_exp[x<0] = 0		nptest.assert_array_equal(y,y_exp, err_msg = "relu layer forward incorrect for \n x = \n {} \n".format(x))	def test_relu_x_gradient(this):		# Test the x gradient of relu.		x = np.random.randint(low = -10, high = 10, size = (30,1))		layer = layers.relu()		dydx = layer.x_gradient(x)		idx = (layer.forward(x)!=x)		dydx_exp = np.eye(30)		dydx_exp[idx[:,0],idx[:,0]] = 0		nptest.assert_array_equal(dydx, dydx_exp, err_msg = "relu layer x gradient incorrect for \n x = \n {} \n".format(x))
 		
 if __name__ == '__main__':
 	unittest.main()

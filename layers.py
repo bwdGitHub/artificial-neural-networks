@@ -75,4 +75,4 @@ class fc(layer):
 		
 		# dy/dx[i]
 		
-		return this.W[:,i]
+		return this.W[:,i]class relu(layer):	def forward(this,x):		return np.maximum(x,0)	def backward(this):		return NotImplementedError	def x_gradient(this, x):		# Gradient of y = this.forward(x) w.r.t. x		dydx = np.eye(x.shape[0])		idx = x[:,0]<0		dydx[idx, idx] = 0		return dydx		

@@ -5,7 +5,7 @@ import contextlibimport layersimport numpy.testing as nptestimport numpy as n
 
 # To Consider/Add:
 # 1. Mock test the base class
-# 2. Test ann_by_layers with layer array inputs - maybe mock layers once/if input validation added.# 3. Test ann_by_layers forward method with more examples.
+# 2. Test ann_by_layers with layer array inputs - maybe mock layers once/if input validation added.# 3. Test ann_by_layers forward method with more examples. In particular more layers (error in commit dd9420e, forward of ann_by_layers applies forward to x on iterations, not y).
 				
 class test_ann_by_layers(unittest.TestCase):
 
@@ -40,6 +40,6 @@ class test_ann_by_layers(unittest.TestCase):
 				with contextlib.redirect_stdout(catch_stdout):
 					print(nn)
 				this.assertEqual(catch_stdout.getvalue(), nn.__class__.__name__ + " class with name " + nn.name + '\n') 
-		def test_forward(this):		# Test the forward method of ann_by_layers		l = [layers.fc(NumHidden=10, W = np.eye(10), b = np.zeros((10,1))), layers.relu()]		nn = ann_by_layers(layers = l)		x = np.arange(-5,5).T		y = nn.forward(x)		y_exp = x		y_exp[x<0] = 0		nptest.assert_array_equal(y,y_exp)		
+		def test_forward(this):		# Test the forward method of ann_by_layers		l = [layers.fc(NumHidden=10, W = np.eye(10), b = np.zeros((10,1))), layers.relu()]		nn = ann_by_layers(layers = l)		x = np.arange(-5,5)		x = x[:, None]		y = nn.forward(x)		y_exp = x		y_exp[x<0] = 0		nptest.assert_array_equal(y,y_exp)		
 if __name__ == '__main__':
 	unittest.main()

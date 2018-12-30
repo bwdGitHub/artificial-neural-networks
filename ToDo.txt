@@ -1,0 +1,1 @@
+ToDo - General1. Run all tests from a single call - e.g. see nose, unittest TestLoader discover, or write a simple suite+runner.

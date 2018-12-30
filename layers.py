@@ -2,7 +2,7 @@ from abc import ABC, abstractmethod
 import numpy as np
 
 # To Do/Consider:
-# 1. Remove indexed return for gradients?# 2. Fix down a gradient API?# 3. Get trainable parameters API/Implementation?
+# 1. Remove indexed return for gradients?# 2. Fix down a gradient API?# 3. Get trainable parameters API/Implementation? Default in ABC should be {}?# 4. Adapt layers for multiple observations.
 
 class layer(ABC):
 	## layer - Abstract base class for layers.	
@@ -78,4 +78,4 @@ class fc(layer):
 		
 		# dy/dx[i]
 		
-		return this.W[:,i]class relu(layer):	def forward(this,x):		return np.maximum(x,0)	def backward(this):		return NotImplementedError	def get_training_parameters(this,x=[]):		return {}	def x_gradient(this, x):		# Gradient of y = this.forward(x) w.r.t. x		dydx = np.eye(x.shape[0])		idx = x[:,0]<0		dydx[idx, idx] = 0		return dydx		
+		return this.W[:,i]class relu(layer):	# ReLu layer - rectified linear unit, given a tensor x, replace each element of xi of x by max(xi,0).	def forward(this,x):		return np.maximum(x,0)	def backward(this):		return NotImplementedError	def get_training_parameters(this,x=[]):		return {}	def x_gradient(this, x):		# Gradient of y = this.forward(x) w.r.t. x		dydx = np.eye(x.shape[0])		idx = x[:,0]<0		dydx[idx, idx] = 0		return dydx		class mse(layer):	# Mean square error loss layer	def get_training_parameters(this, x=[]):		return {}	def forward(this, x, y):		# Compute mean square error between x and y		return np.sum(np.power(x-y,2))	def x_gradient(this, x, y):		# Compute the gradient of mean square error		return 2*(x-y)	def backward(this):		return NotImplementedError	

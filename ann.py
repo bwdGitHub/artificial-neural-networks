@@ -10,7 +10,7 @@ class ann(ABC):
 	@abstractmethod
 	def __str__(this):
 		# Child classes should implement their display.
-		pass
+		pass	@abstractmethod	def forward(this,x):		# forward x through the network.		pass
 		
 class ann_by_layers(ann):
 	
@@ -23,4 +23,4 @@ class ann_by_layers(ann):
 		
 	def __str__(this):
 		return this.__class__.__name__ + " class with name " + this.name
-				
+					def forward(this,x):		# forward x through the layers.		y = x		for layer in this.layers:			y = layer.forward(x)		return y

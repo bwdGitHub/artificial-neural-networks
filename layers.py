@@ -33,7 +33,7 @@ class fc(layer):
 	
 	def backward(this):
 		print("Backward for fc not implemented")
-		raise NotImplementedError	def get_training_parameters(this, x = []):		# Return dictionary of trainable parameters, optionally with gradients.		if x == []:			params = { 
+		raise NotImplementedError	def get_training_parameters(this, x = []):		# Return dictionary of trainable parameters, optionally with gradients.		if len(x)==0:			params = { 
 			'Weights': {'Name': 'W'},
 			'Bias': {'Name':'b'}
 			}		else:			params = { 				'Weights' : {'Name': 'W', 'Gradient': this.W_gradient(x)},				'Bias' : {'Name':'b', 'Gradient': this.b_gradient(x)}					}		return params

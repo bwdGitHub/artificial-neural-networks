@@ -10,7 +10,7 @@ class ann(ABC):
 	@abstractmethod
 	def __str__(this):
 		# Child classes should implement their display.
-		pass	@abstractmethod	def forward(this,x):		# forward x through the network.		pass	@abstractmethod	def initialize_training_parameters(this, f = np.random.normal ):		# Initialize values of training parameters.		pass
+		pass	@abstractmethod	def forward(this,x):		# forward x through the network.		pass	@abstractmethod	def initialize_training_parameters(this, f = np.random.normal ):		# Initialize values of training parameters.		pass	@abstractmethod	def get_training_parameters(this, x = []):		# Get training parameters of the network		pass
 		
 class ann_by_layers(ann):
 	
@@ -23,4 +23,5 @@ class ann_by_layers(ann):
 		
 	def __str__(this):
 		return this.__class__.__name__ + " class with name " + this.name
-					def initialize_training_parameters(this, f = np.random.normal ):		# Initialize training parameters of the layers.		for layer in this.layers:			layer.initialize_training_parameters( f )	def forward(this,x):		# forward x through the layers.		y = x		for layer in this.layers:			y = layer.forward(y)		return y
+					def initialize_training_parameters(this, f = np.random.normal ):		# Initialize training parameters of the layers.		for layer in this.layers:			layer.initialize_training_parameters( f )	def get_training_parameters(this, x = []):		# Get training parameters of each layer		params = []		forwardX = (len(x)==0)		xhat = x		for layer in this.layers:			params.append(layer.get_training_parameters(x))			if forwardX:
+				xhat = layer.forward(x)		return params	def forward(this,x):		# forward x through the layers.		y = x		for layer in this.layers:			y = layer.forward(y)		return y

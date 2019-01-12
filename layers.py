@@ -25,7 +25,7 @@ class fc(layer):
 				this.InputSize = InputSize
 		this.NumHidden = NumHidden
 		this.W = W
-		this.b = b	def initialize_training_parameters( this, f = np.random.normal ):		# Initialize the training parameters.		this.W = f(size = (this.NumHidden, this.InputSize))		this.b = f(size = (this.NumHidden, 1))	
+		this.b = b	def __eq__(this, layer):		return (isinstance(layer, fc) and			np.array_equal(this.W, layer.W) and			np.array_equal(this.b, layer.b) and			this.InputSize == layer.InputSize and			this.NumHidden == layer.NumHidden )	def initialize_training_parameters( this, f = np.random.normal ):		# Initialize the training parameters.		this.W = f(size = (this.NumHidden, this.InputSize))		this.b = f(size = (this.NumHidden, 1))	
 		
 	def forward(this, x):
 		# Forward x.
@@ -78,5 +78,5 @@ class fc(layer):
 		
 		# dy/dx[i]
 		
-		return this.W[:,i]class relu(layer):	# ReLu layer - rectified linear unit, given a tensor x, replace each element of xi of x by max(xi,0).	def forward(this,x):		return np.maximum(x,0)	def backward(this):		return NotImplementedError	def get_training_parameters(this,x=[]):		return {}	def initialize_training_parameters(this, f):
-		pass	def x_gradient(this, x):		# Gradient of y = this.forward(x) w.r.t. x		dydx = np.eye(x.shape[0])		idx = x[:,0]<0		dydx[idx, idx] = 0		return dydx		class mse(layer):	# Mean square error loss layer	def get_training_parameters(this, x=[]):		return {}	def initialize_training_parameters(this, f):		pass	def forward(this, x, y):		# Compute mean square error between x and y		return np.sum(np.power(x-y,2))	def x_gradient(this, x, y):		# Compute the gradient of mean square error		return 2*(x-y)	def backward(this):		return NotImplementedError	
+		return this.W[:,i]class relu(layer):	# ReLu layer - rectified linear unit, given a tensor x, replace each element of xi of x by max(xi,0).	def __eq__(this, layer):		return isinstance(layer, relu)	def forward(this,x):		return np.maximum(x,0)	def backward(this):		return NotImplementedError	def get_training_parameters(this,x=[]):		return {}	def initialize_training_parameters(this, f):
+		pass	def x_gradient(this, x):		# Gradient of y = this.forward(x) w.r.t. x		dydx = np.eye(x.shape[0])		idx = x[:,0]<0		dydx[idx, idx] = 0		return dydx		class mse(layer):	# Mean square error loss layer	def __eq__(this, layer):		return isinstance(layer, mse)	def get_training_parameters(this, x=[]):		return {}	def initialize_training_parameters(this, f):		pass	def forward(this, x, y):		# Compute mean square error between x and y		return np.sum(np.power(x-y,2))	def x_gradient(this, x, y):		# Compute the gradient of mean square error		return 2*(x-y)	def backward(this):		return NotImplementedError	

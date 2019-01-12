@@ -19,7 +19,7 @@ class test_fc_layer(unittest.TestCase):
 			'WithBias' : {'InputSize' : 1, 'NumHidden' : 5, 'b' : np.ones((1,5))}
 			}
 			
-		# Super Constructor
+		this.initializerArguments = { 			'Default' : {},			'Custom' : { np.random.uniform }			}		# Super Constructor
 		super(test_fc_layer, this).__init__(*args,**kwargs)
 	
 	def assertEqualProperties(this, obj, *args, **kwargs):
@@ -40,7 +40,7 @@ class test_fc_layer(unittest.TestCase):
 				this.assertIsInstance(layer, layers.fc)
 				this.assertEqualProperties(layer, **this.validInputs[input_key])
 		def test_get_training_parameters(this):		# Test the get_training_parameters method		layer = layers.fc(InputSize = 2, NumHidden = 10)		params = layer.get_training_parameters()		params_exp = {			'Weights': {'Name': 'W'},			'Bias': {'Name':'b'}		}		this.assertDictEqual(params, params_exp)		
-	def test_forward(this):
+	def test_initialize_training_parameters(this):		# Test the initialize_training_parameters method.		for initializerArg in this.initializerArguments:			with this.subTest():				layer = layers.fc( InputSize=3, NumHidden = 5 )				layer.initialize_training_parameters(*this.initializerArguments[initializerArg])				this.assertEqual( layer.W.shape, (5,3) )				this.assertEqual( layer.b.shape, (5,1) )	def test_forward(this):
 		
 		# Test the forward method
 		

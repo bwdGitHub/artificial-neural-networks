@@ -13,7 +13,10 @@ class test_ann_by_layers(unittest.TestCase):
 		# Initialize test attributes and parameters
 		
 		# Parameter for valid inputs to constructor.
-		this.validInputs = [([],''), ([],'test'), ([], 'test')]
+		this.validInputs = [([],''), ([],'test'), ([], 'test')]		# Options for initialize_training_parameters		this.initializerArguments = { 
+			'Default' : {},
+			'Custom' : { np.random.uniform }
+			}
 		
 		# Super constructor.
 		super(test_ann_by_layers, this).__init__(*args, **kwargs)
@@ -40,6 +43,7 @@ class test_ann_by_layers(unittest.TestCase):
 				with contextlib.redirect_stdout(catch_stdout):
 					print(nn)
 				this.assertEqual(catch_stdout.getvalue(), nn.__class__.__name__ + " class with name " + nn.name + '\n') 
-		def test_forward(this):		# Test the forward method of ann_by_layers		l = [layers.fc(InputSize = 10, NumHidden=10, W = np.eye(10), b = np.zeros((10,1))), layers.relu()]		nn = ann_by_layers(layers = l)		x = np.arange(-5,5)		x = x[:, None]		y = nn.forward(x)		y_exp = x		y_exp[x<0] = 0		nptest.assert_array_equal(y,y_exp)		
+		def test_forward(this):		# Test the forward method of ann_by_layers		l = [layers.fc(InputSize = 10, NumHidden=10, W = np.eye(10), b = np.zeros((10,1))), layers.relu()]		nn = ann_by_layers(layers = l)		x = np.arange(-5,5)		x = x[:, None]		y = nn.forward(x)		y_exp = x		y_exp[x<0] = 0		nptest.assert_array_equal(y,y_exp)			def test_initialize_training_parameters(this):		# Test the initialize_training_parameters method of ann_by_layers		l = [layers.fc(InputSize = 5, NumHidden = 10), layers.relu(), layers.fc(InputSize = 10, NumHidden = 3)]		nn = ann_by_layers(layers=l)		for initializerArg in this.initializerArguments:
+			with this.subTest():				nn.initialize_training_parameters(*this.initializerArguments[initializerArg])				this.assertEqual(nn.layers[0].W.shape, (10, 5))				this.assertEqual(nn.layers[2].b.shape, (3, 1) )
 if __name__ == '__main__':
 	unittest.main()

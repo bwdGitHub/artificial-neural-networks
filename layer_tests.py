@@ -13,10 +13,10 @@ class test_fc_layer(unittest.TestCase):
 		
 		# Parameter for valid inputs to fc layer constructor. 
 		this.validInputs = {
-			'One' : {'NumHidden' : 1},
-			'Many' : {'NumHidden' : 10}, 
-			'WithWeights' : {'NumHidden' : 3, 'W' : np.ones((2,3))},
-			'WithBias' : {'NumHidden' : 5, 'b' : np.ones((1,5))}
+			'One' : {'InputSize' : 1, 'NumHidden' : 1},
+			'Many' : {'InputSize' : 5, 'NumHidden' : 10}, 
+			'WithWeights' : {'InputSize' : 2, 'NumHidden' : 3, 'W' : np.ones((2,3))},
+			'WithBias' : {'InputSize' : 1, 'NumHidden' : 5, 'b' : np.ones((1,5))}
 			}
 			
 		# Super Constructor
@@ -39,7 +39,7 @@ class test_fc_layer(unittest.TestCase):
 				layer = layers.fc(**this.validInputs[input_key])
 				this.assertIsInstance(layer, layers.fc)
 				this.assertEqualProperties(layer, **this.validInputs[input_key])
-		def test_get_training_parameters(this):		# Test the get_training_parameters method		layer = layers.fc(NumHidden = 10)		params = layer.get_training_parameters()		params_exp = {			'Weights': {'Name': 'W'},			'Bias': {'Name':'b'}		}		this.assertDictEqual(params, params_exp)		
+		def test_get_training_parameters(this):		# Test the get_training_parameters method		layer = layers.fc(InputSize = 2, NumHidden = 10)		params = layer.get_training_parameters()		params_exp = {			'Weights': {'Name': 'W'},			'Bias': {'Name':'b'}		}		this.assertDictEqual(params, params_exp)		
 	def test_forward(this):
 		
 		# Test the forward method
@@ -47,7 +47,7 @@ class test_fc_layer(unittest.TestCase):
 		W = np.random.randint(low = -5, high = 5, size = (4, 5))
 		b = np.random.randint(low = -5, high = 5, size = (4, 1))
 		x = np.random.randint(low = -5, high = 5, size = (5, 1))
-		layer = layers.fc(NumHidden = 4, W = W, b = b)
+		layer = layers.fc(InputSize = 5, NumHidden = 4, W = W, b = b)
 		y_act = layer.forward(x)
 		y_exp = np.dot(W,x) + b
 		
@@ -61,7 +61,7 @@ class test_fc_layer(unittest.TestCase):
 		W = np.random.randint(low = -5, high = 5, size = (4, 5))
 		b = np.random.randint(low = -5, high = 5, size = (4, 1))
 		x = np.random.randint(low = -5, high = 5, size = (5, 1))
-		layer = layers.fc(NumHidden = 4, W = W, b = b)
+		layer = layers.fc(InputSize = 5, NumHidden = 4, W = W, b = b)
 		for i in range(4):
 			for j in range(5):
 				dydWij_act = layer.W_gradient(x,i,j)
@@ -84,7 +84,7 @@ class test_fc_layer(unittest.TestCase):
 		W = np.random.randint(low = -5, high = 5, size = (4, 5))
 		b = np.random.randint(low = -5, high = 5, size = (4, 1))
 		x = np.random.randint(low = -5, high = 5, size = (5, 1))
-		layer = layers.fc(NumHidden = 4, W = W, b = b)
+		layer = layers.fc(InputSize = 5, NumHidden = 4, W = W, b = b)
 		for i in range(4):
 			dydb_act = layer.b_gradient(x,i)
 			dydb_exp = np.zeros((4,1))
@@ -102,7 +102,7 @@ class test_fc_layer(unittest.TestCase):
 		W = np.random.randint(low = -5, high = 5, size = (4, 5))
 		b = np.random.randint(low = -5, high = 5, size = (4, 1))
 		x = np.random.randint(low = -5, high = 5, size = (5, 1))
-		layer = layers.fc(NumHidden = 4, W = W, b = b)
+		layer = layers.fc(InputSize = 5, NumHidden = 4, W = W, b = b)
 		for i in range(4):
 			dydxi_act = layer.x_gradient(x, i)
 			dydxi_exp = W[:,i]

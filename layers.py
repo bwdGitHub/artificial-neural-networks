@@ -18,11 +18,11 @@ class layer(ABC):
 	@abstractmethod	def get_training_parameters(this, *args, **kwargs):		pass
 class fc(layer):
 	
-	## fc - A fully connected layer
+	## fc - A fully connected layer		# Input is expected to be a vector x of size (n,1). Specify InputSize as n at layer construction.
 
-	def __init__(this, NumHidden, W=[], b = []):
+	def __init__(this, InputSize, NumHidden, W=[], b = []):
 		# Constructor - Initialize attributes.
-		
+				this.InputSize = InputSize
 		this.NumHidden = NumHidden
 		this.W = W
 		this.b = b

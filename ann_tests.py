@@ -40,6 +40,6 @@ class test_ann_by_layers(unittest.TestCase):
 				with contextlib.redirect_stdout(catch_stdout):
 					print(nn)
 				this.assertEqual(catch_stdout.getvalue(), nn.__class__.__name__ + " class with name " + nn.name + '\n') 
-		def test_forward(this):		# Test the forward method of ann_by_layers		l = [layers.fc(NumHidden=10, W = np.eye(10), b = np.zeros((10,1))), layers.relu()]		nn = ann_by_layers(layers = l)		x = np.arange(-5,5)		x = x[:, None]		y = nn.forward(x)		y_exp = x		y_exp[x<0] = 0		nptest.assert_array_equal(y,y_exp)		
+		def test_forward(this):		# Test the forward method of ann_by_layers		l = [layers.fc(InputSize = 10, NumHidden=10, W = np.eye(10), b = np.zeros((10,1))), layers.relu()]		nn = ann_by_layers(layers = l)		x = np.arange(-5,5)		x = x[:, None]		y = nn.forward(x)		y_exp = x		y_exp[x<0] = 0		nptest.assert_array_equal(y,y_exp)		
 if __name__ == '__main__':
 	unittest.main()

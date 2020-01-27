@@ -49,3 +49,6 @@ The `ann.py` file defines an abstract `ann` class, and implements `ann_by_layers
 I only tried implementing this in the simple "sequential" case called `ann_by_layers`. In this case each layer has at most one input and one output connection, and the graph is a single connected component. The container for `get_training_parameters` can then simply be a flat list/array since there is a natural ordering of the layers in the graph. Of course on top of the abstract `ann` interface I also had to add methods for the gradients.
 
 The `mlp` class is a convenience class for constructing an `ann_by_layers` consisting of layers `fc` then `relu` repeatedly for some given "depth".
+
+#### Tests
+The tests `layer_tests.py` and `ann_tests.py` were passing last time I checked. In this case CI stands for "Check Intermittently".
